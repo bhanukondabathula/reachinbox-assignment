@@ -2,42 +2,56 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AppBar from '../components/AppBar';
 import Footer from '../components/Footer';
-import googleIcon from '../assets/google.svg';
+import google from '../assets/google.svg';
 
 function Login() {
   const navigate = useNavigate();
-  const userToken = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (userToken) {
+    if (token) {
       navigate('/');
     }
-  }, [userToken, navigate]);
+  }, [token, navigate]);
 
-  const initiateGoogleLogin = () => {
-    const googleLoginURL = "https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=https://reach-in-box-assignment1.vercel.app/";
-    window.location.href = googleLoginURL;
+  const handleGoogleLogin = () => {
+    // Redirect to Google login URL
+    window.location.href = "https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=https://reach-in-box-assignment1.vercel.app/"
   };
 
   return (
     <div>
       <AppBar />
-      <div className="min-h-screen flex flex-col items-center justify-center bg-black text-white">
-        <div className="px-16 py-10 space-y-10 text-center border border-gray-700 bg-gray-900 rounded-2xl">
-          <h1 className="text-xl font-semibold">Create a New Account</h1>
-          <button 
-            className="flex items-center px-5 py-2 text-sm text-gray-300 border border-gray-600 rounded-lg cursor-pointer hover:bg-gray-800"
-            onClick={initiateGoogleLogin}
-          >
-            <img src={googleIcon} alt="Google" className="w-4 mr-3" />
-            Sign Up with Google
-          </button>
-          <Link 
-            to="/login"
-            className="block mt-5 px-6 py-2 text-white bg-gradient-to-r from-blue-500 to-indigo-700 rounded-lg"
-          >
-            Already have an account? Sign In
-          </Link>
+      <div className="bg-black text-white w-screen h-screen flex flex-col justify-center items-center">
+        <div className="bg-[#111214] text-center space-y-10 px-16 rounded-2xl border border-[#343A40]">
+          <div>
+            <div className="text-xl font-semibold mt-6">
+              Create a new account
+            </div>
+            <div
+              className="mt-6 border-white/40 border px-20 py-2 text-sm flex items-center text-[#CCCCCC] rounded-lg cursor-pointer"
+              onClick={handleGoogleLogin}
+            >
+              <img src={google} alt="google" className="w-4 mr-3"></img>
+              Sign Up with Google
+            </div>
+          </div>
+
+          <div>
+            <Link
+              to="/login"
+              className="bg-gradient-to-r from-[#4B63DD] to-[#0524BFFC] mx-16 mt-5 px-6 text-sm py-3 rounded-md cursor-pointer"
+            >
+              Create an Account
+            </Link>
+            <div className="my-8 mb-10 text-[#909296]">
+              Already have an account?{" "}
+              <Link to="/signin" className="text-[#C1C2C5]">
+                {" "}
+                Sign In
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
       <Footer />
@@ -46,3 +60,4 @@ function Login() {
 }
 
 export default Login;
+
