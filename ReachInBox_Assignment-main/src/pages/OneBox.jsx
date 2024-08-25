@@ -1,56 +1,29 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import SubView from "../components/SubView";
-import MainPage from "../components/MainPage";
-import SideBar from "../components/SideBar";
-import TopBar from "../components/TopBar";
+import { useEffect, useState } from 'react';
+import SideBar from '../components/SideBar';
+import MainPage from '../components/MainPage';
+import RightSection from '../components/RightSection';
+import AppBar from '../components/AppBar';
 
-function OneBox() {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const token = queryParams.get("token");
+const OneBox = () => {
+  const [currentTheme, setCurrentTheme] = useState('light');
 
   useEffect(() => {
-    if (token) {
-      localStorage.setItem("token", `Bearer ${token}`);
-      navigate('/'); // Navigate to the main page after setting the token
-    } else {
-      const storedToken = localStorage.getItem("token");
-      if (!storedToken) {
-        navigate("/login");
-      }
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setCurrentTheme(savedTheme);
     }
-  }, [token, navigate]);
-
-  const [selectedComponent, setSelectedComponent] = useState("/");
-
-  const handleMenuItemClick = (path) => {
-    setSelectedComponent(path);
-  };
-
-  const renderSelectedComponent = () => {
-    switch (selectedComponent) {
-      case "/search":
-      case "/mail":
-      case "/send":
-      case "/stack":
-      case "/stacks":
-        return <SubView />;
-      case "/inbox":
-        return <MainPage />;
-      default:
-        return <SubView />;
-    }
-  };
+  }, []);
 
   return (
-    <div className="h-screen w-screen dark:bg-black bg-white pl-14">
-      <SideBar onMenuItemClick={handleMenuItemClick} />
-      <TopBar />
-      {renderSelectedComponent()}
+    <div className={`flex flex-col h-screen ${currentTheme}`}>
+      <AppBar />
+      <div className="flex-grow flex overflow-hidden">
+        <SideBar />
+        <MainPage />
+        <RightSection />
+      </div>
     </div>
   );
-}
+};
 
 export default OneBox;
